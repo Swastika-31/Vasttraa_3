@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VASTRA — Owners</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="nav-wrap">
+    <nav class="nav container">
+      <div class="brand"><a href="index.html"><img src="assets/logo1.png" class="logo" alt="VASTRA"></a></div>
+      <ul class="nav-links">
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="socials.html" target="_blank" rel="noopener">SOCIALS</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h1 class="section-title">Meet The Founders</h1>
+      <p class="muted">Our team behind the brand.</p>
+    </section>
+
+    <section class="section founders-modal-grid">
+      <div class="founder-card modal-trigger" data-name="Alex Roe" data-role="Co-Founder" data-bio="Alex leads design and vision." data-img="https://via.placeholder.com/300?text=Alex">
+        <img src="https://via.placeholder.com/200?text=Alex" alt="Alex">
+        <h4>Alex Roe</h4>
+        <p>Co-Founder</p>
+      </div>
+      <div class="founder-card modal-trigger" data-name="Sam Park" data-role="Co-Founder" data-bio="Sam runs operations." data-img="https://via.placeholder.com/300?text=Sam">
+        <img src="https://via.placeholder.com/200?text=Sam" alt="Sam">
+        <h4>Sam Park</h4>
+        <p>Co-Founder</p>
+      </div>
+      <div class="founder-card modal-trigger" data-name="Riley Fox" data-role="Design" data-bio="Riley is head of design." data-img="https://via.placeholder.com/300?text=Riley">
+        <img src="https://via.placeholder.com/200?text=Riley" alt="Riley">
+        <h4>Riley Fox</h4>
+        <p>Design</p>
+      </div>
+      <div class="founder-card modal-trigger" data-name="Casey Lin" data-role="Production" data-bio="Casey manages production." data-img="https://via.placeholder.com/300?text=Casey">
+        <img src="https://via.placeholder.com/200?text=Casey" alt="Casey">
+        <h4>Casey Lin</h4>
+        <p>Production</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal (hidden by default) -->
+  <div id="founder-modal" class="modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <button class="modal-close" aria-label="Close">×</button>
+      <div class="modal-body">
+        <img id="modal-img" src="https://via.placeholder.com/300" alt="Founder">
+        <h3 id="modal-name">Name</h3>
+        <p id="modal-role">Role</p>
+        <p id="modal-bio">Bio</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

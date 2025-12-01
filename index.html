@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VASTRA — Elevate Your Aesthetic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <!-- Navigation (fixed) -->
+    <header class="nav-wrap">
+      <nav class="nav container">
+        <div class="brand">
+          <a href="index.html"><img src="assets/logo1.png" alt="VASTRA" class="logo"></a>
+        </div>
+
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+        <label for="nav-toggle" class="nav-toggle-label" aria-hidden="true">
+          <span></span>
+        </label>
+
+        <ul class="nav-links">
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="#catalogue" data-scroll>CATALOGUE</a></li>
+          <li><a href="#lookbook" data-scroll>LOOKBOOK</a></li>
+          <li><a href="#shop-section" data-scroll>SHOP</a></li>
+          <li><a href="owners.html" target="_blank" rel="noopener">OWNERS</a></li>
+          <li><a href="socials.html" target="_blank" rel="noopener">SOCIALS</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" aria-label="Hero">
+      <!-- JS will create .hero-slide elements here for the slideshow -->
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content container">
+        <h1 class="hero-title">Elevate Your Aesthetic</h1>
+        <p class="hero-sub">A minimal, future-forward clothing experience.</p>
+        <a class="cta" href="#shop-section" data-scroll>Shop The Drop</a>
+      </div>
+    </section>
+
+    <!-- Alert marquee (after hero, before catalogue) -->
+    <section class="alert-marquee" aria-hidden="false">
+      <div class="marquee-track">
+        <span>ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK — ALERT : NEW WINTER STOCK</span>
+      </div>
+    </section>
+
+    <!-- Catalogue -->
+    <section class="section container" id="catalogue">
+      <h2 class="section-title">Catalogue</h2>
+      <div class="categories-grid">
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Denim" alt="Denim"> <h3>Denim</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Sweatshirts" alt="Sweatshirts"> <h3>Sweatshirts</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Hoodies" alt="Hoodies"> <h3>Hoodies</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Jewels" alt="Jewels"> <h3>Jewels</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Jackets" alt="Jackets"> <h3>Jackets</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=More" alt="More"> <h3>More</h3> </article>
+      </div>
+    </section>
+
+    <!-- Get Inspired (lookbook) -->
+    <section class="section container" id="lookbook">
+      <h2 class="section-title">Get Inspired</h2>
+      <div class="inspired-grid">
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+1" alt="Inspire 1"> <h3>Inspire 1</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+2" alt="Inspire 2"> <h3>Inspire 2</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+3" alt="Inspire 3"> <h3>Inspire 3</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+4" alt="Inspire 4"> <h3>Inspire 4</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+5" alt="Inspire 5"> <h3>Inspire 5</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+6" alt="Inspire 6"> <h3>Inspire 6</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+7" alt="Inspire 7"> <h3>Inspire 7</h3> </article>
+        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+8" alt="Inspire 8"> <h3>Inspire 8</h3> </article>
+      </div>
+    </section>
+
+    <!-- Founders section removed as requested -->
+
+    <!-- Shop Section -->
+    <section class="section container" id="shop-section">
+      <h2 class="section-title">Shop Layout Previews</h2>
+      <div class="shop-grid">
+        <div class="shop-card">
+          <img src="https://via.placeholder.com/800x500?text=Classic+Grid" alt="Classic Grid">
+          <h4>Classic Grid Layout</h4>
+        </div>
+        <div class="shop-card">
+          <img src="https://via.placeholder.com/800x400?text=Wide+Display" alt="Wide Display">
+          <h4>Wide Display Layout</h4>
+        </div>
+        <div class="shop-card">
+          <img src="https://via.placeholder.com/800x300?text=Minimal+Row" alt="Minimal Row">
+          <h4>Minimal Row Layout</h4>
+        </div>
+        <div class="shop-card">
+          <img src="https://via.placeholder.com/800x500?text=Editorial+Highlight" alt="Editorial Highlight">
+          <h4>Editorial Highlight Layout</h4>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">© <span id="year"></span> VASTRA — All rights reserved.</div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
