@@ -53,8 +53,7 @@ body{
 .hero-slide.is-active{opacity:1}
 .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:2}
 .hero-content{position:relative;z-index:3;text-align:center;padding:6rem 0;color:var(--white-pearl)}
-.hero-title{font-size:clamp(2rem,5vw,4rem);margin:0 0.6rem 0.6rem;font-weight:700;color:var(--white-pearl)}
-.hero-sub{color:rgba(255,255,255,0.9);margin:0 0 1.4rem}
+.hero-subtext{color:rgba(255,255,255,0.9);margin:0 0 1.4rem}
 .cta{display:inline-block;padding:12px 24px;border-radius:8px;border:2px solid var(--accent);color:var(--accent);text-decoration:none;transition:all var(--transition);background:transparent}
 .cta:hover{background:var(--accent);color:#fff;transform:translateY(-4px)}
 
@@ -134,7 +133,65 @@ body{
 /* Small utilities */
 .muted{color:var(--muted-sub)}
 
-/* End of file */
+/* Typewriter (hero) */
+/*
+  CSS-only typewriter using steps() and ch units.
+  - Adjust --chars and animation-duration to match text length/speed.
+*/
+.hero-title{
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size:clamp(2rem,5vw,4rem);
+  margin:0 0.6rem 0.6rem;
+  font-weight:700;
+  color:var(--white-pearl);
+  display:inline-block;
+  white-space:nowrap;
+  overflow:hidden;
+  position:relative;
+  width:0ch; /* animate width from 0 → Nch */
+  --chars:22; /* number of characters in the heading (adjust if text changes) */
+  /* Typing duration ~3.8s for the whole line (adjustable) */
+  animation: typing 3.8s steps(var(--chars), end) 0.3s forwards;
+  text-rendering:optimizeLegibility;
+}
+
+@keyframes typing{ from{ width:0ch } to{ width:22ch } }
+
+.hero-title::after{
+  content: '';
+  position: absolute;
+  top: 0.12em;
+  right: 0;
+  width: 2px;
+  height: 0.9em;
+  background: var(--white-pearl);
+  border-radius:1px;
+  /* Blink caret after typing completes: delay ≈ typing-duration + animation delay */
+  animation: caret 900ms steps(1,end) infinite;
+  animation-delay: 4.1s; /* 0.3s delay + 3.8s typing = 4.1s */
+}
+
+@keyframes caret{ 0%{opacity:1} 50%{opacity:0} 100%{opacity:1} }
+
+.hero-underline{
+  width:0ch;
+  height:1px;
+  background:rgba(255,255,255,0.9);
+  margin:0.6rem auto 0;
+  animation: underline 3.8s steps(var(--chars), end) 0.3s forwards;
+}
+
+@keyframes underline{ from{ width:0ch } to{ width:22ch } }
+
+.hero-subtext{color:rgba(255,255,255,0.9);margin:0 0 1.4rem}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .hero-title{animation:none;width:auto}
+  .hero-title::after{animation:none;opacity:1}
+  .hero-underline{animation:none;width:22ch}
+}
+
 /* ALERT MARQUEE */
 .alert-marquee{
   width:100%;
@@ -183,3 +240,18 @@ body{
 @media (prefers-reduced-motion: reduce){
   .marquee-track span{animation:none}
 }
+
+/* Get Inspired — horizontal 9:16 cards */
+.inspired-wrap{position:relative}
+.inspired-scroll{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px 8vw;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.inspired-scroll::-webkit-scrollbar{display:none}
+.inspired-card{flex:0 0 auto;width:clamp(160px,40vw,300px);aspect-ratio:9/16;background:rgba(255,255,255,0.02);border-radius:12px;overflow:hidden;scroll-snap-align:center;display:flex;flex-direction:column}
+.inspired-card img{width:100%;height:100%;object-fit:cover;display:block}
+.inspired-card h3{margin:8px 10px;color:var(--white-pearl);text-align:center;font-size:0.95rem}
+.inspired-next{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.04);border:0;color:var(--white-pearl);padding:10px 12px;border-radius:10px;cursor:pointer;z-index:10;font-size:22px}
+.inspired-next:hover{background:var(--accent);color:#fff}
+
+@media (max-width:640px){.inspired-scroll{gap:12px;padding:12px 6vw}.inspired-next{right:8px;font-size:18px}}
+
+/* Dragging state */
+.inspired-scroll.is-dragging{cursor:grabbing;user-select:none}

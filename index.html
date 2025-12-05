@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -41,8 +42,9 @@
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="hero-content container">
         <h1 class="hero-title">Elevate Your Aesthetic</h1>
-        <p class="hero-sub">A minimal, future-forward clothing experience.</p>
-        <a class="cta" href="#shop-section" data-scroll>Shop The Drop</a>
+        <div class="hero-underline" aria-hidden="true"></div>
+        <p class="hero-subtext">A minimal, future-forward clothing experience.</p>
+        <a class="cta cta-btn" href="#shop-section" data-scroll>Shop The Drop</a>
       </div>
     </section>
 
@@ -69,15 +71,18 @@
     <!-- Get Inspired (lookbook) -->
     <section class="section container" id="lookbook">
       <h2 class="section-title">Get Inspired</h2>
-      <div class="inspired-grid">
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+1" alt="Inspire 1"> <h3>Inspire 1</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+2" alt="Inspire 2"> <h3>Inspire 2</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+3" alt="Inspire 3"> <h3>Inspire 3</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+4" alt="Inspire 4"> <h3>Inspire 4</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+5" alt="Inspire 5"> <h3>Inspire 5</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+6" alt="Inspire 6"> <h3>Inspire 6</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+7" alt="Inspire 7"> <h3>Inspire 7</h3> </article>
-        <article class="cat-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+8" alt="Inspire 8"> <h3>Inspire 8</h3> </article>
+      <div class="inspired-wrap">
+        <div class="inspired-scroll" id="inspiredScroll" tabindex="0">
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+1" alt="Inspire 1"> <h3>Inspire 1</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+2" alt="Inspire 2"> <h3>Inspire 2</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+3" alt="Inspire 3"> <h3>Inspire 3</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+4" alt="Inspire 4"> <h3>Inspire 4</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+5" alt="Inspire 5"> <h3>Inspire 5</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+6" alt="Inspire 6"> <h3>Inspire 6</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+7" alt="Inspire 7"> <h3>Inspire 7</h3> </article>
+          <article class="inspired-card"> <img src="https://via.placeholder.com/800x500?text=Inspire+8" alt="Inspire 8"> <h3>Inspire 8</h3> </article>
+        </div>
+        <button class="inspired-next" id="inspiredNext" aria-label="Scroll right">›</button>
       </div>
     </section>
 

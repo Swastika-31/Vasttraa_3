@@ -22,6 +22,38 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 })();
 
+/* (Typewriter now handled in CSS; removed JS block) */
+
+/* Get Inspired: drag-to-scroll + next-button */
+(function(){
+  var scroll = document.getElementById('inspiredScroll');
+  var btn = document.getElementById('inspiredNext');
+  if(!scroll) return;
+
+  var isDown = false, startX = 0, scrollLeft = 0;
+  scroll.addEventListener('pointerdown', function(e){
+    isDown = true; scroll.setPointerCapture(e.pointerId);
+    startX = e.clientX; scrollLeft = scroll.scrollLeft;
+    scroll.classList.add('is-dragging');
+  });
+  scroll.addEventListener('pointermove', function(e){ if(!isDown) return; var x = e.clientX; var walk = (startX - x); scroll.scrollLeft = scrollLeft + walk; });
+  scroll.addEventListener('pointerup', function(e){ isDown = false; try{ scroll.releasePointerCapture(e.pointerId); }catch(_){} scroll.classList.remove('is-dragging'); });
+  scroll.addEventListener('pointerleave', function(){ isDown = false; scroll.classList.remove('is-dragging'); });
+
+  if(btn){
+    btn.addEventListener('click', function(){
+      var card = scroll.querySelector('.inspired-card'); if(!card) return;
+      var gap = 18; // fallback
+      try{ gap = parseInt(getComputedStyle(scroll).gap) || gap; }catch(e){}
+      var step = card.offsetWidth + gap;
+      scroll.scrollBy({left: step, behavior: 'smooth'});
+    });
+  }
+
+  // keyboard support
+  scroll.addEventListener('keydown', function(e){ if(e.key === 'ArrowRight'){ e.preventDefault(); if(btn) btn.click(); } });
+})();
+
 /* Owners page: modal interactions (delegated) */
 (function(){
   var modal = document.getElementById('founder-modal');
