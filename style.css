@@ -262,17 +262,25 @@ body{
   .marquee-track span{animation:none}
 }
 
-/* Get Inspired — horizontal 9:16 cards */
+/* Get Inspired — responsive horizontal carousel (9:16 cards) */
 .inspired-wrap{position:relative}
-.inspired-scroll{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px 8vw;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
-.inspired-scroll::-webkit-scrollbar{display:none}
-.inspired-card{flex:0 0 auto;width:clamp(160px,40vw,300px);aspect-ratio:9/16;background:rgba(255,255,255,0.02);border-radius:12px;overflow:hidden;scroll-snap-align:center;display:flex;flex-direction:column}
-.inspired-card img{width:100%;height:100%;object-fit:cover;display:block}
-.inspired-card h3{margin:8px 10px;color:var(--white-pearl);text-align:center;font-size:0.95rem}
-.inspired-next{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.04);border:0;color:var(--white-pearl);padding:10px 12px;border-radius:10px;cursor:pointer;z-index:10;font-size:22px}
-.inspired-next:hover{background:var(--accent);color:#fff}
+.inspired-carousel{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px 4vw;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.inspired-carousel::-webkit-scrollbar{display:none}
+.inspire-card{flex:0 0 calc(25% - 18px);aspect-ratio:9/16;background:rgba(255,255,255,0.02);border-radius:12px;overflow:hidden;scroll-snap-align:center;box-shadow:0 8px 20px rgba(0,0,0,0.45)}
+.inspire-card img{width:100%;height:100%;object-fit:cover;display:block}
 
-@media (max-width:640px){.inspired-scroll{gap:12px;padding:12px 6vw}.inspired-next{right:8px;font-size:18px}}
+/* arrows (appear on hover) */
+.inspired-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.04);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 220ms ease,transform 120ms ease;z-index:12}
+.inspired-wrap:hover .inspired-nav{opacity:0.4}
+.inspired-nav.left{left:8px}
+.inspired-nav.right{right:8px}
+.inspired-nav:active{transform:translateY(-50%) scale(0.96)}
 
-/* Dragging state */
-.inspired-scroll.is-dragging{cursor:grabbing;user-select:none}
+/* responsive card counts */
+@media (min-width:1200px){ .inspire-card{flex-basis:calc(25% - 18px)} /* 4 cards */ }
+@media (min-width:900px) and (max-width:1199px){ .inspire-card{flex-basis:calc(33.333% - 18px)} /* 3 cards */ }
+@media (min-width:640px) and (max-width:899px){ .inspire-card{flex-basis:calc(40% - 18px)} /* 2-3 cards */ }
+@media (max-width:639px){ .inspire-card{flex-basis:calc(80% - 18px)} /* 1-2 cards */ }
+
+/* dragging visual */
+.inspired-carousel.dragging{cursor:grabbing;user-select:none}

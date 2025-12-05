@@ -24,34 +24,65 @@ document.addEventListener('DOMContentLoaded', function(){
 
 /* (Typewriter now handled in CSS; removed JS block) */
 
-/* Get Inspired: drag-to-scroll + next-button */
+/* Get Inspired carousel: auto-slide + manual horizontal scroll */
 (function(){
-  var scroll = document.getElementById('inspiredScroll');
-  var btn = document.getElementById('inspiredNext');
-  if(!scroll) return;
+  var carousel = document.getElementById('inspiredCarousel');
+  var prevBtn = document.getElementById('inspiredPrev');
+  var nextBtn = document.getElementById('inspiredNext');
+  if(!carousel) return;
 
-  var isDown = false, startX = 0, scrollLeft = 0;
-  scroll.addEventListener('pointerdown', function(e){
-    isDown = true; scroll.setPointerCapture(e.pointerId);
-    startX = e.clientX; scrollLeft = scroll.scrollLeft;
-    scroll.classList.add('is-dragging');
-  });
-  scroll.addEventListener('pointermove', function(e){ if(!isDown) return; var x = e.clientX; var walk = (startX - x); scroll.scrollLeft = scrollLeft + walk; });
-  scroll.addEventListener('pointerup', function(e){ isDown = false; try{ scroll.releasePointerCapture(e.pointerId); }catch(_){} scroll.classList.remove('is-dragging'); });
-  scroll.addEventListener('pointerleave', function(){ isDown = false; scroll.classList.remove('is-dragging'); });
+  var isHover = false; var timer = null; var interval = 3000;
 
-  if(btn){
-    btn.addEventListener('click', function(){
-      var card = scroll.querySelector('.inspired-card'); if(!card) return;
-      var gap = 18; // fallback
-      try{ gap = parseInt(getComputedStyle(scroll).gap) || gap; }catch(e){}
-      var step = card.offsetWidth + gap;
-      scroll.scrollBy({left: step, behavior: 'smooth'});
-    });
+  function getGap(){
+    try{ return parseInt(getComputedStyle(carousel).gap) || 18; }catch(e){ return 18; }
   }
 
+  function getStep(){
+    var card = carousel.querySelector('.inspire-card');
+    if(!card) return carousel.clientWidth;
+    var gap = getGap();
+    return card.offsetWidth + gap;
+  }
+
+  function autoSlide(){
+    if(isHover) return;
+    var step = getStep();
+    // smooth advance
+    carousel.scrollBy({left: step, behavior: 'smooth'});
+    // if we've reached (or passed) the end, reset to start after transition
+    setTimeout(function(){
+      if(carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 2){
+        carousel.scrollTo({left:0});
+      }
+    }, 600);
+  }
+
+  function start(){ stop(); timer = setInterval(autoSlide, interval); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  // hover pause/resume
+  carousel.addEventListener('mouseenter', function(){ isHover = true; });
+  carousel.addEventListener('mouseleave', function(){ isHover = false; });
+
+  // nav buttons
+  if(prevBtn) prevBtn.addEventListener('click', function(){ carousel.scrollBy({left: -getStep(), behavior:'smooth'}); start(); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ carousel.scrollBy({left: getStep(), behavior:'smooth'}); start(); });
+
+  // pointer drag for desktop (progressive enhancement)
+  var isDown = false, startX = 0, scrollLeft = 0;
+  carousel.addEventListener('pointerdown', function(e){ isDown = true; startX = e.clientX; scrollLeft = carousel.scrollLeft; carousel.classList.add('dragging'); carousel.setPointerCapture(e.pointerId); stop(); });
+  carousel.addEventListener('pointermove', function(e){ if(!isDown) return; var x = e.clientX; var walk = (startX - x); carousel.scrollLeft = scrollLeft + walk; });
+  carousel.addEventListener('pointerup', function(e){ if(!isDown) return; isDown = false; carousel.classList.remove('dragging'); try{ carousel.releasePointerCapture(e.pointerId); }catch(_){} start(); });
+  carousel.addEventListener('pointercancel', function(){ isDown = false; carousel.classList.remove('dragging'); start(); });
+
   // keyboard support
-  scroll.addEventListener('keydown', function(e){ if(e.key === 'ArrowRight'){ e.preventDefault(); if(btn) btn.click(); } });
+  carousel.addEventListener('keydown', function(e){ if(e.key === 'ArrowLeft'){ e.preventDefault(); if(prevBtn) prevBtn.click(); } if(e.key === 'ArrowRight'){ e.preventDefault(); if(nextBtn) nextBtn.click(); } });
+
+  // make focusable for keyboard navigation
+  carousel.setAttribute('tabindex','0');
+
+  // start autoplay
+  start();
 })();
 
 /* Jewels slideshow: auto-fade + manual drag/arrow navigation */
