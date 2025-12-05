@@ -54,6 +54,68 @@ document.addEventListener('DOMContentLoaded', function(){
   scroll.addEventListener('keydown', function(e){ if(e.key === 'ArrowRight'){ e.preventDefault(); if(btn) btn.click(); } });
 })();
 
+/* Jewels slideshow: auto-fade + manual drag/arrow navigation */
+(function(){
+  var slider = document.querySelector('.jewels-slider');
+  if(!slider) return;
+
+  var track = slider.querySelector('.slider-track');
+  var leftNav = slider.querySelector('.slider-nav.left');
+  var rightNav = slider.querySelector('.slider-nav.right');
+
+  var total = 9;
+  var idx = 0;
+  var interval = 2500;
+  var timer = null;
+  var isHover = false;
+
+  // create slides
+  for(var i=1;i<=total;i++){
+    var img = document.createElement('img');
+    img.className = 'slider-item';
+    img.src = 'assets/jewels/' + i + '.jpg';
+    img.alt = 'Jewels '+i;
+    if(i===1) img.classList.add('is-active');
+    track.appendChild(img);
+  }
+
+  var slides = Array.prototype.slice.call(track.querySelectorAll('.slider-item'));
+
+  function show(n){
+    slides.forEach(function(s, i){ s.classList.toggle('is-active', i === n); });
+    idx = (n + total) % total;
+  }
+
+  function next(){ show((idx+1)%total); }
+  function prev(){ show((idx-1+total)%total); }
+
+  function start(){ if(timer) clearInterval(timer); timer = setInterval(function(){ if(!isHover) next(); }, interval); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  // hover pause
+  slider.addEventListener('mouseenter', function(){ isHover = true; });
+  slider.addEventListener('mouseleave', function(){ isHover = false; });
+
+  // nav clicks
+  if(leftNav) leftNav.addEventListener('click', function(){ prev(); start(); });
+  if(rightNav) rightNav.addEventListener('click', function(){ next(); start(); });
+
+  // pointer drag (swipe) to change slide
+  var pointerDown = false, startX=0, deltaX=0;
+  slider.addEventListener('pointerdown', function(e){ pointerDown = true; startX = e.clientX; slider.classList.add('dragging'); });
+  window.addEventListener('pointermove', function(e){ if(!pointerDown) return; deltaX = e.clientX - startX; });
+  window.addEventListener('pointerup', function(e){ if(!pointerDown) return; pointerDown = false; slider.classList.remove('dragging'); if(Math.abs(deltaX) > 40){ if(deltaX < 0) next(); else prev(); start(); } deltaX = 0; });
+
+  // keyboard navigation
+  slider.addEventListener('keydown', function(e){ if(e.key === 'ArrowLeft'){ prev(); start(); } if(e.key === 'ArrowRight'){ next(); start(); } });
+
+  // ensure focusable for keyboard
+  slider.setAttribute('tabindex','0');
+
+  // start autoplay
+  start();
+})();
+
 /* Owners page: modal interactions (delegated) */
 (function(){
   var modal = document.getElementById('founder-modal');

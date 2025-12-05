@@ -68,6 +68,27 @@ body{
 .cat-card h3{margin:14px;padding:0 16px 22px;color:var(--white-pearl)}
 .cat-card:hover{background:var(--accent);color:#fff;transform:translateY(-6px)}
 
+/* Jewels slider (catalogue) */
+.catalogue-card.jewels-slider{position:relative;overflow:hidden;border-radius:10px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;height:100%}
+.catalogue-card.jewels-slider .slider-track{position:relative;width:100%;height:0;padding-bottom:100%;/* 1:1 aspect */overflow:hidden}
+.catalogue-card.jewels-slider .slider-item{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 700ms ease;will-change:opacity}
+.catalogue-card.jewels-slider .slider-item.is-active{opacity:1}
+
+.catalogue-card.jewels-slider .slider-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.9);width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 180ms ease}
+.catalogue-card.jewels-slider:hover .slider-nav{opacity:0.4}
+.catalogue-card.jewels-slider .slider-nav.left{left:8px}
+.catalogue-card.jewels-slider .slider-nav.right{right:8px}
+.catalogue-card.jewels-slider .slider-nav:active{transform:translateY(-50%) scale(0.96)}
+
+.catalogue-card.jewels-slider .catalogue-label{position:absolute;left:12px;bottom:8px;color:var(--white-pearl);font-weight:700;letter-spacing:1px;background:transparent;margin:0;padding:0.2rem 0.6rem;border-radius:6px}
+
+/* Drag cursor */
+.catalogue-card.jewels-slider.dragging{cursor:grabbing}
+
+@media (max-width:640px){
+  .catalogue-card.jewels-slider .slider-nav{width:32px;height:32px;font-size:18px}
+}
+
 /* Inspired horizontal row */
 .inspired-row{display:flex;gap:18px;padding:12px 6px 36px 6px;overflow-x:auto;scrollbar-width:none}
 .inspired-row::-webkit-scrollbar{display:none}
