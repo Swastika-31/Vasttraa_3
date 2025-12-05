@@ -110,7 +110,23 @@ body{
 /* Shop grid */
 .shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
 .shop-card{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;text-align:center}
-.shop-card img{width:100%;height:200px;object-fit:cover;border-radius:8px}
+.shop-card img{display:block;width:100%;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+
+/* Shop preview specific layout: keep image proportions, responsive 2x2 grid */
+/* Shop horizontal scroll (similar to Get Inspired) */
+.shop-scroll{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px 4vw;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.shop-scroll::-webkit-scrollbar{display:none}
+.shop-card{flex:0 0 auto;width:260px;aspect-ratio:3/4;scroll-snap-align:start;border-radius:14px;overflow:hidden;background:rgba(255,255,255,0.02);box-shadow:0 12px 30px rgba(0,0,0,0.6)}
+.shop-card img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Responsive: adjust how many cards are visible */
+@media (min-width:1200px){ .shop-card{width:300px} /* desktop: ~2-3 cards visible depending on container */ }
+@media (min-width:900px) and (max-width:1199px){ .shop-card{width:280px} /* medium */ }
+@media (min-width:640px) and (max-width:899px){ .shop-card{width:240px} /* tablet */ }
+@media (max-width:639px){ .shop-card{width:88vw; /* mobile: one large card */ } }
+
+/* subtle parallax support for polish */
+.shop-card img{transform:translateZ(0);will-change:transform}
 
 /* Owners page modal */
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:100}

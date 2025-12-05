@@ -85,6 +85,64 @@ document.addEventListener('DOMContentLoaded', function(){
   start();
 })();
 
+/* Shop auto-scroll row: fast continuous auto-scroll with manual override */
+(function(){
+  var sc = document.getElementById('shopScroll');
+  if(!sc) return;
+
+  // duplicate children for seamless loop
+  var children = Array.from(sc.children);
+  var totalChildren = children.length;
+  if(totalChildren === 0) return;
+
+  children.forEach(function(c){ sc.appendChild(c.cloneNode(true)); });
+
+  var contentWidth = sc.scrollWidth / 2; // original width
+  var duration = 5500; // ms for full original width (5.5s)
+  var paused = false;
+  var userInteracting = false;
+  var rafId = null;
+  var lastTs = null;
+
+  // speed in px per ms
+  function speed(){ return contentWidth / duration; }
+
+  function step(ts){
+    if(lastTs === null) lastTs = ts;
+    var delta = ts - lastTs;
+    lastTs = ts;
+    if(!paused && !userInteracting){
+      sc.scrollLeft += speed() * delta;
+      if(sc.scrollLeft >= contentWidth){ sc.scrollLeft -= contentWidth; }
+    }
+    rafId = requestAnimationFrame(step);
+  }
+
+  // start RAF
+  rafId = requestAnimationFrame(step);
+
+  // Pause on hover
+  sc.addEventListener('mouseenter', function(){ paused = true; });
+  sc.addEventListener('mouseleave', function(){ paused = false; lastTs = null; });
+
+  // Manual interaction detection
+  var interactTimer = null;
+  function userStart(){ userInteracting = true; if(rafId) lastTs = null; if(interactTimer) clearTimeout(interactTimer); }
+  function userEnd(){ if(interactTimer) clearTimeout(interactTimer); interactTimer = setTimeout(function(){ userInteracting = false; lastTs = null; }, 1500); }
+
+  // pointer events
+  sc.addEventListener('pointerdown', function(e){ userStart(); sc.setPointerCapture(e.pointerId); sc.classList.add('dragging'); startX = e.clientX; startScroll = sc.scrollLeft; });
+  sc.addEventListener('pointermove', function(e){ if(e.pressure === 0 && !e.buttons) return; if(userInteracting){ var dx = e.clientX - (window.startX||0); /* not used */ } });
+  sc.addEventListener('pointerup', function(e){ try{ sc.releasePointerCapture(e.pointerId); }catch(_){} sc.classList.remove('dragging'); userEnd(); });
+
+  // wheel / touch scrolling
+  sc.addEventListener('scroll', function(){ userStart(); userEnd(); });
+
+  // cleanup on page hide
+  document.addEventListener('visibilitychange', function(){ if(document.hidden){ if(rafId) cancelAnimationFrame(rafId); } else { lastTs = null; rafId = requestAnimationFrame(step); } });
+
+})();
+
 /* Jewels slideshow: auto-fade + manual drag/arrow navigation */
 (function(){
   var slider = document.querySelector('.jewels-slider');
