@@ -5,6 +5,16 @@
   Aesthetic: minimal, dark, muted red accent (#d72828)
 */
 
+@keyframes pulse-icon{
+  0%, 100%{ opacity:0.6; filter:blur(2px); }
+  50%{ opacity:0.7; filter:blur(2px); }
+}
+
+@keyframes slide-up{
+  from{ transform:translateX(-50%) translateY(0); opacity:0.7; filter:blur(2px); }
+  to{ transform:translateX(-50%) translateY(-8px); opacity:1; filter:blur(0px); }
+}
+
 :root{
   --bg: #0e0e0e;
   --muted-red: #d72828;
@@ -89,59 +99,153 @@ body{
   .catalogue-card.jewels-slider .slider-nav{width:32px;height:32px;font-size:18px}
 }
 
-/* Denim & Jackets sliders (same as Jewels) */
+/* Denim, Sweatshirts, Hoodies & Jackets sliders (same as Jewels) */
 .catalogue-card.denim-slider,
+.catalogue-card.sweatshirts-slider,
+.catalogue-card.hoodies-slider,
 .catalogue-card.jackets-slider{
   position:relative;overflow:hidden;border-radius:10px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;height:100%
 }
 .catalogue-card.denim-slider .slider-track,
+.catalogue-card.sweatshirts-slider .slider-track,
+.catalogue-card.hoodies-slider .slider-track,
 .catalogue-card.jackets-slider .slider-track{
   position:relative;width:100%;height:0;padding-bottom:100%;/* 1:1 aspect */overflow:hidden
 }
 .catalogue-card.denim-slider .slider-item,
+.catalogue-card.sweatshirts-slider .slider-item,
+.catalogue-card.hoodies-slider .slider-item,
 .catalogue-card.jackets-slider .slider-item{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 700ms ease;will-change:opacity
 }
 .catalogue-card.denim-slider .slider-item.is-active,
+.catalogue-card.sweatshirts-slider .slider-item.is-active,
+.catalogue-card.hoodies-slider .slider-item.is-active,
 .catalogue-card.jackets-slider .slider-item.is-active{
   opacity:1
 }
 
 .catalogue-card.denim-slider .slider-nav,
+.catalogue-card.sweatshirts-slider .slider-nav,
+.catalogue-card.hoodies-slider .slider-nav,
 .catalogue-card.jackets-slider .slider-nav{
   position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.9);width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 180ms ease
 }
 .catalogue-card.denim-slider:hover .slider-nav,
+.catalogue-card.sweatshirts-slider:hover .slider-nav,
+.catalogue-card.hoodies-slider:hover .slider-nav,
 .catalogue-card.jackets-slider:hover .slider-nav{
   opacity:0.4
 }
 .catalogue-card.denim-slider .slider-nav.left,
+.catalogue-card.sweatshirts-slider .slider-nav.left,
+.catalogue-card.hoodies-slider .slider-nav.left,
 .catalogue-card.jackets-slider .slider-nav.left{
   left:8px
 }
 .catalogue-card.denim-slider .slider-nav.right,
+.catalogue-card.sweatshirts-slider .slider-nav.right,
+.catalogue-card.hoodies-slider .slider-nav.right,
 .catalogue-card.jackets-slider .slider-nav.right{
   right:8px
 }
 .catalogue-card.denim-slider .slider-nav:active,
+.catalogue-card.sweatshirts-slider .slider-nav:active,
+.catalogue-card.hoodies-slider .slider-nav:active,
 .catalogue-card.jackets-slider .slider-nav:active{
   transform:translateY(-50%) scale(0.96)
 }
 
 .catalogue-card.denim-slider .catalogue-label,
+.catalogue-card.sweatshirts-slider .catalogue-label,
+.catalogue-card.hoodies-slider .catalogue-label,
 .catalogue-card.jackets-slider .catalogue-label{
   position:absolute;left:12px;bottom:8px;color:var(--white-pearl);font-weight:700;letter-spacing:1px;background:transparent;margin:0;padding:0.2rem 0.6rem;border-radius:6px
 }
 
 .catalogue-card.denim-slider.dragging,
+.catalogue-card.sweatshirts-slider.dragging,
+.catalogue-card.hoodies-slider.dragging,
 .catalogue-card.jackets-slider.dragging{
   cursor:grabbing
 }
 
 @media (max-width:640px){
   .catalogue-card.denim-slider .slider-nav,
+  .catalogue-card.sweatshirts-slider .slider-nav,
+  .catalogue-card.hoodies-slider .slider-nav,
   .catalogue-card.jackets-slider .slider-nav{
     width:32px;height:32px;font-size:18px
+  }
+}
+
+/* More card with interactive plus icon */
+.cat-card.more-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden
+}
+
+.cat-card.more-card img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0
+}
+
+.cat-card.more-card h3{
+  position:absolute;
+  z-index:1
+}
+
+.more-icon{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:60px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  opacity:0.6;
+  filter:blur(2px);
+  transition:opacity 220ms ease, transform 220ms ease, filter 220ms ease;
+  animation:pulse-icon 3s ease-in-out infinite;
+  z-index:3;
+  font-size:48px;
+  color:rgba(255,255,255,0.7);
+  font-weight:100;
+  line-height:1;
+}
+
+.more-icon::before{
+  content:"+";
+}
+
+.cat-card.more-card:hover .more-icon{
+  animation:none;
+  opacity:1;
+  filter:blur(0px);
+  transform:translate(-50%, -50%) scale(1.1);
+}
+
+.more-icon:focus-visible{
+  outline:2px solid var(--white-pearl);
+  outline-offset:4px;
+  border-radius:4px;
+}
+
+@media (max-width:480px){
+  .more-icon{
+    font-size:32px;
+    width:45px;
+    height:45px;
   }
 }
 
@@ -356,3 +460,151 @@ body{
 
 /* dragging visual */
 .inspired-carousel.dragging{cursor:grabbing;user-select:none}
+
+/* OWNERS PAGE HERO */
+.owners-hero .hero-bg{
+  background:url('assets/poster1.jpg') center/cover no-repeat !important;
+  filter:brightness(0.6)
+}
+
+.owners-hero .hero-slide{
+  display:none !important
+}
+
+.owners-hero .hero-content{
+  position:relative;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+  padding:4rem 1rem
+}
+
+/* OWNERS PAGE HERO */
+.owners-hero .hero-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3rem;
+  justify-content:center
+}
+
+.owners-hero .hero-text-wrapper{
+  text-align:center;
+  z-index:2
+}
+
+.owners-hero .hero-heading{
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  font-weight:700;
+  letter-spacing:0.05em;
+  margin-bottom:1rem;
+  color:#fff;
+  text-shadow:0 0 20px rgba(255,255,0,0.3)
+}
+
+.owners-hero .hero-subtext{
+  font-size:clamp(1rem, 2vw, 1.5rem);
+  font-weight:300;
+  color:rgba(255,255,255,0.85);
+  letter-spacing:0.02em
+}
+
+/* CIRCULAR NEON FOUNDER CARDS */
+.founders-modal-grid{
+  display:flex;
+  flex-direction:row;
+  gap:2rem;
+  width:100%;
+  max-width:100%;
+  justify-content:space-evenly;
+  align-items:center;
+  padding:0 2rem
+}
+
+.founder-card.circular-card{
+  position:relative;
+  aspect-ratio:1/1;
+  cursor:pointer;
+  transition:transform 300ms ease;
+  width:clamp(120px, 18vw, 220px);
+  flex-shrink:0
+}
+
+.founder-card.circular-card:hover{
+  transform:scale(1.05)
+}
+
+.card-glow{
+  position:absolute;
+  inset:-20px;
+  border-radius:50%;
+  background:transparent;
+  box-shadow:0 0 40px rgba(255,255,0,0.5), 0 0 80px rgba(255,255,0,0.3);
+  z-index:0;
+  pointer-events:none
+}
+
+.founder-card.circular-card:hover .card-glow{
+  box-shadow:0 0 50px rgba(255,255,0,0.7), 0 0 100px rgba(255,255,0,0.4)
+}
+
+.founder-card.circular-card img{
+  position:relative;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  z-index:1;
+  display:block
+}
+
+.card-info{
+  position:absolute;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:2;
+  color:var(--white-pearl);
+  text-shadow:0 2px 8px rgba(0,0,0,0.8)
+}
+
+.card-info h4{
+  margin:0;
+  font-size:1.1rem;
+  font-weight:700;
+  letter-spacing:0.5px
+}
+
+.card-info p{
+  margin:4px 0 0;
+  font-size:0.85rem;
+  opacity:0.9;
+  letter-spacing:0.3px
+}
+
+@media (max-width:768px){
+  .founders-modal-grid{
+    gap:1rem;
+    padding:0 1rem
+  }
+  
+  .founder-card.circular-card{
+    width:clamp(100px, 20vw, 150px)
+  }
+}
+
+@media (max-width:480px){
+  .founders-modal-grid{
+    flex-wrap:wrap;
+    gap:1.5rem;
+    justify-content:center
+  }
+  
+  .founder-card.circular-card{
+    width:clamp(130px, 40vw, 160px)
+  }
+}

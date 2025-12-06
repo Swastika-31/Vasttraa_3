@@ -353,12 +353,17 @@ document.addEventListener('DOMContentLoaded', function(){
   function next(){ show((idx+1)%total); }
   function prev(){ show((idx-1+total)%total); }
 
-  function start(){ if(timer) clearInterval(timer); timer = setInterval(function(){ if(!isHover) next(); }, interval); }
+  function start(){
+    if(timer) clearInterval(timer);
+    timer = setInterval(function(){
+      if(!isHover && slider.dataset.paused !== 'true') next();
+    }, interval);
+  }
   function stop(){ if(timer){ clearInterval(timer); timer = null; } }
 
   // hover pause
-  slider.addEventListener('mouseenter', function(){ isHover = true; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'true'; }); });
-  slider.addEventListener('mouseleave', function(){ isHover = false; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'false'; }); });
+  slider.addEventListener('mouseenter', function(){ isHover = true; document.querySelectorAll('.denim-slider, .sweatshirts-slider, .hoodies-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'true'; }); });
+  slider.addEventListener('mouseleave', function(){ isHover = false; document.querySelectorAll('.denim-slider, .sweatshirts-slider, .hoodies-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'false'; }); });
 
   // nav clicks
   if(leftNav) leftNav.addEventListener('click', function(){ prev(); start(); });
@@ -380,21 +385,22 @@ document.addEventListener('DOMContentLoaded', function(){
   start();
 })();
 
-/* Denim & Jackets sliders (same logic as Jewels, with synced pause/resume) */
+/* Denim, Sweatshirts, Hoodies & Jackets sliders (same logic as Jewels, with synced pause/resume) */
 (function(){
-  var sliders = ['.denim-slider', '.jackets-slider'];
+  var sliders = ['.denim-slider', '.sweatshirts-slider', '.hoodies-slider', '.jackets-slider'];
   sliders.forEach(function(selector){
     var slider = document.querySelector(selector);
     if(!slider) return;
     var track = slider.querySelector('.slider-track');
     var leftNav = slider.querySelector('.slider-nav.left');
     var rightNav = slider.querySelector('.slider-nav.right');
-    var folder = selector === '.denim-slider' ? 'denim' : 'jackets';
+    var folder = selector.replace('.', '').replace('-slider', '');
     var total = 4;
     var idx = 0;
     var interval = 2500;
     var timer = null;
     var isHover = false;
+    track.innerHTML = '';
     for(var i=1;i<=total;i++){
       var img = document.createElement('img');
       img.className = 'slider-item';
@@ -410,10 +416,15 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     function next(){ show((idx+1)%total); }
     function prev(){ show((idx-1+total)%total); }
-    function start(){ if(timer) clearInterval(timer); timer = setInterval(function(){ if(!isHover && !slider.dataset.paused) next(); }, interval); }
+    function start(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(function(){
+        if(!isHover && slider.dataset.paused !== 'true') next();
+      }, interval);
+    }
     function stop(){ if(timer){ clearInterval(timer); timer = null; } }
-    slider.addEventListener('mouseenter', function(){ isHover = true; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'true'; }); });
-    slider.addEventListener('mouseleave', function(){ isHover = false; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'false'; }); });
+    slider.addEventListener('mouseenter', function(){ isHover = true; document.querySelectorAll('.denim-slider, .sweatshirts-slider, .hoodies-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'true'; }); });
+    slider.addEventListener('mouseleave', function(){ isHover = false; document.querySelectorAll('.denim-slider, .sweatshirts-slider, .hoodies-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'false'; }); });
     if(leftNav) leftNav.addEventListener('click', function(){ prev(); start(); });
     if(rightNav) rightNav.addEventListener('click', function(){ next(); start(); });
     var pointerDown = false, startX=0, deltaX=0;
