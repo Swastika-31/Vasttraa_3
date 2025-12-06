@@ -85,6 +85,181 @@ document.addEventListener('DOMContentLoaded', function(){
   start();
 })();
 
+/* Catalogue Slideshow: Horizontal slide animation (Denim, Jackets) */
+(function(){
+  'use strict';
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var sliders = document.querySelectorAll('.catalogue-slider');
+
+  sliders.forEach(function(slider){
+    var viewport = slider.querySelector('.slider-viewport');
+    var track = slider.querySelector('.slider-track');
+    var leftBtn = slider.querySelector('.slider-btn.left');
+    var rightBtn = slider.querySelector('.slider-btn.right');
+    var folder = slider.getAttribute('data-folder');
+    var imageCount = parseInt(slider.getAttribute('data-count')) || 4;
+
+    var currentIndex = 0;
+    var timer = null;
+    var isHovering = false;
+    var interactTimer = null;
+    var isTouch = false;
+    var touchStart = 0;
+
+    // Dynamically load images
+    for(var i = 1; i <= imageCount; i++){
+      var img = document.createElement('img');
+      img.src = 'assets/' + folder + '/' + i + '.jpg';
+      img.alt = folder.charAt(0).toUpperCase() + folder.slice(1) + ' ' + i;
+      img.setAttribute('loading', 'lazy');
+      track.appendChild(img);
+    }
+
+    var images = Array.from(track.querySelectorAll('img'));
+
+    function updateSlide(){
+      if(!prefersReduced){
+        track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+      }
+    }
+
+    function next(){
+      currentIndex = (currentIndex + 1) % imageCount;
+      updateSlide();
+      resetAutoAdvance();
+    }
+
+    function prev(){
+      currentIndex = (currentIndex - 1 + imageCount) % imageCount;
+      updateSlide();
+      resetAutoAdvance();
+    }
+
+    function autoAdvance(){
+      if(!isHovering && !prefersReduced){
+        next();
+      }
+    }
+
+    function startAutoAdvance(){
+      if(prefersReduced) return;
+      if(timer) clearInterval(timer);
+      timer = setInterval(autoAdvance, 4000);
+    }
+
+    function stopAutoAdvance(){
+      if(timer){
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function resetAutoAdvance(){
+      stopAutoAdvance();
+      if(interactTimer) clearTimeout(interactTimer);
+      interactTimer = setTimeout(function(){
+        startAutoAdvance();
+      }, 1500);
+    }
+
+    // Button handlers
+    if(leftBtn) leftBtn.addEventListener('click', prev);
+    if(rightBtn) rightBtn.addEventListener('click', next);
+
+    // Hover pause/resume
+    slider.addEventListener('mouseenter', function(){
+      isHovering = true;
+      stopAutoAdvance();
+    });
+    slider.addEventListener('mouseleave', function(){
+      isHovering = false;
+      resetAutoAdvance();
+    });
+
+    // Touch swipe
+    viewport.addEventListener('touchstart', function(e){
+      isTouch = true;
+      touchStart = e.touches[0].clientX;
+      stopAutoAdvance();
+    }, {passive:true});
+
+    viewport.addEventListener('touchend', function(e){
+      if(!isTouch) return;
+      var touchEnd = e.changedTouches[0].clientX;
+      var diff = touchStart - touchEnd;
+      if(Math.abs(diff) > 50){
+        if(diff > 0) next();
+        else prev();
+      }
+      isTouch = false;
+      resetAutoAdvance();
+    }, {passive:true});
+
+    // Keyboard navigation
+    slider.addEventListener('keydown', function(e){
+      if(e.key === 'ArrowLeft'){
+        e.preventDefault();
+        prev();
+      } else if(e.key === 'ArrowRight'){
+        e.preventDefault();
+        next();
+      }
+    });
+
+    slider.setAttribute('tabindex', '0');
+
+    // Start autoplay
+    startAutoAdvance();
+  });
+})();
+
+/* Denim & Jackets sliders (same logic as Jewels) */
+(function(){
+  var sliders = ['.denim-slider', '.jackets-slider'];
+  sliders.forEach(function(selector){
+    var slider = document.querySelector(selector);
+    if(!slider) return;
+    var track = slider.querySelector('.slider-track');
+    var leftNav = slider.querySelector('.slider-nav.left');
+    var rightNav = slider.querySelector('.slider-nav.right');
+    var folder = selector === '.denim-slider' ? 'denim' : 'jackets';
+    var total = 9;
+    var idx = 0;
+    var interval = 2500;
+    var timer = null;
+    var isHover = false;
+    for(var i=1;i<=total;i++){
+      var img = document.createElement('img');
+      img.className = 'slider-item';
+      img.src = 'assets/'+folder+'/'+i+'.jpg';
+      img.alt = folder.charAt(0).toUpperCase()+folder.slice(1)+' '+i;
+      if(i===1) img.classList.add('is-active');
+      track.appendChild(img);
+    }
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.slider-item'));
+    function show(n){
+      slides.forEach(function(s, i){ s.classList.toggle('is-active', i === n); });
+      idx = (n + total) % total;
+    }
+    function next(){ show((idx+1)%total); }
+    function prev(){ show((idx-1+total)%total); }
+    function start(){ if(timer) clearInterval(timer); timer = setInterval(function(){ if(!isHover) next(); }, interval); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+    slider.addEventListener('mouseenter', function(){ isHover = true; });
+    slider.addEventListener('mouseleave', function(){ isHover = false; });
+    if(leftNav) leftNav.addEventListener('click', function(){ prev(); start(); });
+    if(rightNav) rightNav.addEventListener('click', function(){ next(); start(); });
+    var pointerDown = false, startX=0, deltaX=0;
+    slider.addEventListener('pointerdown', function(e){ pointerDown = true; startX = e.clientX; slider.classList.add('dragging'); });
+    window.addEventListener('pointermove', function(e){ if(!pointerDown) return; deltaX = e.clientX - startX; });
+    window.addEventListener('pointerup', function(e){ if(!pointerDown) return; pointerDown = false; slider.classList.remove('dragging'); if(Math.abs(deltaX) > 40){ if(deltaX < 0) next(); else prev(); start(); } deltaX = 0; });
+    slider.addEventListener('keydown', function(e){ if(e.key === 'ArrowLeft'){ prev(); start(); } if(e.key === 'ArrowRight'){ next(); start(); } });
+    slider.setAttribute('tabindex','0');
+    start();
+  });
+})();
+
 /* Shop auto-scroll row: fast continuous auto-scroll with manual override */
 (function(){
   var sc = document.getElementById('shopScroll');
@@ -182,8 +357,8 @@ document.addEventListener('DOMContentLoaded', function(){
   function stop(){ if(timer){ clearInterval(timer); timer = null; } }
 
   // hover pause
-  slider.addEventListener('mouseenter', function(){ isHover = true; });
-  slider.addEventListener('mouseleave', function(){ isHover = false; });
+  slider.addEventListener('mouseenter', function(){ isHover = true; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'true'; }); });
+  slider.addEventListener('mouseleave', function(){ isHover = false; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'false'; }); });
 
   // nav clicks
   if(leftNav) leftNav.addEventListener('click', function(){ prev(); start(); });
@@ -203,6 +378,52 @@ document.addEventListener('DOMContentLoaded', function(){
 
   // start autoplay
   start();
+})();
+
+/* Denim & Jackets sliders (same logic as Jewels, with synced pause/resume) */
+(function(){
+  var sliders = ['.denim-slider', '.jackets-slider'];
+  sliders.forEach(function(selector){
+    var slider = document.querySelector(selector);
+    if(!slider) return;
+    var track = slider.querySelector('.slider-track');
+    var leftNav = slider.querySelector('.slider-nav.left');
+    var rightNav = slider.querySelector('.slider-nav.right');
+    var folder = selector === '.denim-slider' ? 'denim' : 'jackets';
+    var total = 4;
+    var idx = 0;
+    var interval = 2500;
+    var timer = null;
+    var isHover = false;
+    for(var i=1;i<=total;i++){
+      var img = document.createElement('img');
+      img.className = 'slider-item';
+      img.src = 'assets/'+folder+'/'+i+'.jpg';
+      img.alt = folder.charAt(0).toUpperCase()+folder.slice(1)+' '+i;
+      if(i===1) img.classList.add('is-active');
+      track.appendChild(img);
+    }
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.slider-item'));
+    function show(n){
+      slides.forEach(function(s, i){ s.classList.toggle('is-active', i === n); });
+      idx = (n + total) % total;
+    }
+    function next(){ show((idx+1)%total); }
+    function prev(){ show((idx-1+total)%total); }
+    function start(){ if(timer) clearInterval(timer); timer = setInterval(function(){ if(!isHover && !slider.dataset.paused) next(); }, interval); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+    slider.addEventListener('mouseenter', function(){ isHover = true; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'true'; }); });
+    slider.addEventListener('mouseleave', function(){ isHover = false; document.querySelectorAll('.denim-slider, .jackets-slider, .jewels-slider').forEach(function(s){ s.dataset.paused = 'false'; }); });
+    if(leftNav) leftNav.addEventListener('click', function(){ prev(); start(); });
+    if(rightNav) rightNav.addEventListener('click', function(){ next(); start(); });
+    var pointerDown = false, startX=0, deltaX=0;
+    slider.addEventListener('pointerdown', function(e){ pointerDown = true; startX = e.clientX; slider.classList.add('dragging'); });
+    window.addEventListener('pointermove', function(e){ if(!pointerDown) return; deltaX = e.clientX - startX; });
+    window.addEventListener('pointerup', function(e){ if(!pointerDown) return; pointerDown = false; slider.classList.remove('dragging'); if(Math.abs(deltaX) > 40){ if(deltaX < 0) next(); else prev(); start(); } deltaX = 0; });
+    slider.addEventListener('keydown', function(e){ if(e.key === 'ArrowLeft'){ prev(); start(); } if(e.key === 'ArrowRight'){ next(); start(); } });
+    slider.setAttribute('tabindex','0');
+    start();
+  });
 })();
 
 /* Owners page: modal interactions (delegated) */
